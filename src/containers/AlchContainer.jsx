@@ -10,7 +10,7 @@ import {
     PageWrapper,
     CenteredGrid,
 } from "../constants/style";
-import SharedTable from "../componants/SharedTable";
+import SharedTable from "../componants/SharedTable.jsx";
 
 export default function AlchContainer() {
 
