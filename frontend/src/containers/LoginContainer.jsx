@@ -1,22 +1,13 @@
-import { useContext, useState} from "react";
-import AuthContext from "../context/auth/AuthContext";
+import { useState} from "react";
 import { doSignInWithEmailAndPassword, doSignInWithGoogle } from "../firebase/auth";
 import { useAuth } from "../context/auth/AuthState";
 import { Navigate } from "react-router-dom";
 import RegistryBox from "../componants/RegistryBox"; 
-import {
-    Grid,
-    Typography,
-    TextField,
-    Button,
-    CircularProgress,
-    Paper,
-} from "@mui/material";
+
 
 
 import {
     PageWrapper,
-    CenteredGrid,
 } from "../constants/style";
 const LoginContainer = () => {
     const { userLoggedIn } = useAuth();

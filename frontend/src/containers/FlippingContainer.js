@@ -1,13 +1,11 @@
 
-import {Grid, Typography, Alert, AlertTitle, Button, Box } from '@mui/material';
+import {Grid, Typography} from '@mui/material';
 import { PageWrapper, BRIGHT_GOLD } from "../constants/style";
 import { useAuth } from "../context/auth/AuthState";
-import { Navigate, useNavigate } from "react-router-dom";
 import NeedAccount from '../componants/NeedAccount';
 
 export default function FlippingContainer(props) {
     const { userLoggedIn } = useAuth();
-    const navigate = useNavigate();
     
     return (
     <PageWrapper>

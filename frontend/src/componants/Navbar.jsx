@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
@@ -11,15 +11,31 @@ import { RuneToolbar,RuneAppBar, RuneTab,RuneTabs, LogoBox,
  } from "../constants/style";
 
 import { useAuth } from "../context/auth/AuthState";
-import AuthContext from "../context/auth/AuthContext";
 import { doSignOut } from "../firebase/auth";
 import logout from "../assets/pictures/logout.png";
 
 // 🎨 Styled Components
 
+// Map a route path to the corresponding tab index (pure function for stable deps)
+const tabFromPath = (path) => {
+    switch (path) {
+        case '/':
+            return 0;
+        case '/alchs':
+            return 1;
+        case '/flipping':
+            return 2;
+        case '/login':
+            return 3;
+        case '/register':
+            return 4;
+        default:
+            return 0;
+    }
+};
+
 
 export default function Navbar() {
-    const authContext = useContext(AuthContext);
     const { userLoggedIn } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,29 +43,11 @@ export default function Navbar() {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const isTablet = useMediaQuery(theme.breakpoints.down('md'));
     
-    // Get current tab based on URL path
-    const getCurrentTab = () => {
-        switch (location.pathname) {
-            case '/':
-                return 0;
-            case '/alchs':
-                return 1;
-            case '/flipping':
-                return 2;
-            case '/login':
-                return 3;
-            case '/register':
-                return 4;
-            default:
-                return 0;
-        }
-    };
-    
-    const [value, setValue] = React.useState(getCurrentTab());
+    const [value, setValue] = React.useState(tabFromPath(location.pathname));
     
     // Update tab when URL changes (for browser back/forward)
     React.useEffect(() => {
-        setValue(getCurrentTab());
+        setValue(tabFromPath(location.pathname));
     }, [location.pathname]);
 
     // Get responsive logo size
