@@ -2,7 +2,10 @@ import { Paper, Table, TableBody, TableHead, TableRow, Box } from "@mui/material
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { RuneTableContainer, RuneTableCellHeader, RuneTableCellBody, RuneTableRow } from "../constants/style";
+
 import SharedTableColumns from "../constants/SharedTableColumns";
+
+
 export default function SharedTable({ children, ...props }) {
     const {sortedMetrics, sortColumn, sortDirection, handleSort, tableType } = props;
     const columns = SharedTableColumns(tableType);

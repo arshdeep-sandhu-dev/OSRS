@@ -1,14 +1,26 @@
-import React from "react";
+import React, {useContext} from "react";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
 import dragonLogo from "../assets/pictures/dragonLogo.png";
 import { useNavigate, useLocation } from "react-router-dom";
-import { RuneAppBar, RuneTab,RuneTabs, LogoBox, RuneToolbar, Title } from "../constants/style";
+import { RuneToolbar,RuneAppBar, RuneTab,RuneTabs, LogoBox, 
+    Title,
+    logoutIconHoverHandlers,
+    logoutIconStyle
+ } from "../constants/style";
+
+import { useAuth } from "../context/auth/AuthState";
+import AuthContext from "../context/auth/AuthContext";
+import { doSignOut } from "../firebase/auth";
+import logout from "../assets/pictures/logout.png";
+
 // 🎨 Styled Components
 
 
 export default function Navbar() {
+    const authContext = useContext(AuthContext);
+    const { userLoggedIn } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const theme = useTheme();
@@ -24,8 +36,10 @@ export default function Navbar() {
                 return 1;
             case '/flipping':
                 return 2;
-            case '/crafting':
+            case '/login':
                 return 3;
+            case '/register':
+                return 4;
             default:
                 return 0;
         }
@@ -65,14 +79,26 @@ export default function Navbar() {
             case 2:
                 navigate('/flipping');
                 break;
+            case 3:
+                navigate('/login');
+                break;
+            case 4:
+                navigate('/register');
+                break;
             default:
                 navigate('/error');
         }
     };
 
     return (
-        <RuneAppBar position="static">
-            <RuneToolbar>
+        <RuneAppBar position="static" 
+        sx={{ 
+            flex: 1,
+            minWidth: 0,
+            maxWidth: '100%',
+            overflowX: 'auto'
+        }}>
+            <RuneToolbar  >
                 {/* Logo + Title */}
                 <LogoBox>
                     <img
@@ -87,11 +113,34 @@ export default function Navbar() {
                 </LogoBox>
 
                 {/* Navigation Tabs */}
-                <Box>
-                    <RuneTabs value={value} onChange={handleChange}>
-                        <RuneTab label="Home"  />
+                <Box >
+                    <RuneTabs
+                        value={value}
+                        onChange={handleChange}
+                        // Make tabs scroll on small screens to avoid overflow
+                        variant={"scrollable"}
+                        scrollButtons={"auto"}
+                        allowScrollButtonsMobile
+                    >
+                        <RuneTab label="Home" />
                         <RuneTab label="Alchs" />
                         <RuneTab label="Flipping" />
+                        {!userLoggedIn && <RuneTab label="Login" />}
+                        {!userLoggedIn && <RuneTab label="Register" />}
+                        
+                        {userLoggedIn && (
+                            <img
+                                src={logout}
+                                alt="Logout"
+                                style={logoutIconStyle}
+                                {...logoutIconHoverHandlers}
+                                onClick={() => {
+                                    doSignOut();
+                                    navigate('/');
+                                    setValue(0);
+                                }}
+                        />)}
+                        
                     </RuneTabs>
                 </Box>
             </RuneToolbar>

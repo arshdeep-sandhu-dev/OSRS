@@ -7,24 +7,32 @@ import HomeState from './context/home/HomeState';
 import ErrorState from './context/error/ErrorState';
 import AlchState from './context/alchs/AlchState';
 import Navbar from './componants/Navbar';
+import { AuthProvider } from './context/auth/AuthState';
+import LoginContainer from './containers/LoginContainer';
+import RegisterContainer from './containers/RegisterContainer';
+import FlippingContainer from './containers/FlippingContainer';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
-        <ErrorState>
-          <HomeState>
-            <AlchState>
-              <Routes>
-                <Route path="/" element={<HomeContainer />} />
-                <Route path="/alchs" element={<AlchContainer />} />
-                <Route path="/flipping" element={<HomeContainer />} />
-                <Route path="*" element={<ErrorContainer />} />
-              </Routes>
-            </AlchState>
-          </HomeState>
-        </ErrorState>
+        <AuthProvider>
+          <Navbar />
+          <ErrorState>
+            <HomeState>
+              <AlchState>
+                <Routes>
+                  <Route path="/" element={<HomeContainer />} />
+                  <Route path="/alchs" element={<AlchContainer />} />
+                  <Route path="/flipping" element={<FlippingContainer />} />
+                  <Route path="*" element={<ErrorContainer />} />
+                  <Route path="/login" element={<LoginContainer />} />
+                  <Route path="/register" element={<RegisterContainer />} />
+                </Routes>
+              </AlchState>
+            </HomeState>
+          </ErrorState>
+        </AuthProvider>
       </BrowserRouter>
     </div>
   );
