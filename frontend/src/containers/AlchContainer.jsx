@@ -10,29 +10,50 @@ import {
     CenteredGrid,
 } from "../constants/style";
 import SharedTable from "../componants/SharedTable.jsx";
+import "../constants/styles.css";
+import { Pagegination } from "../componants/Pagegination.js";
+import { BRIGHT_GOLD } from "../constants/style";
 
 export default function AlchContainer() {
-
+    
     const {
         columns,
         handleSort,
         sortedMetrics,
         sortColumn,
         sortDirection,
-        tableType
+        tableType,
+        refreshData,
+        totalPage,
+        itemsPerPage,
+        currentPage,
+        changePage
     } = useContext(AlchContext);
     return (
         <PageWrapper>
             <CenteredGrid container direction="column" alignItems="center" spacing={4}>
                 <Grid item xs={12}>
-                    <Typography variant="h4" sx={{ color: "#FFD700", fontFamily: '"Rubik", "Inter", sans-serif' }}>
+                    <Typography variant="h4" 
+                        sx={{
+                            mb: 2,
+                            color: BRIGHT_GOLD,
+                            display: 'inline-block', // make underline match text width
+                            borderBottom: '2px solid rgba(245, 200, 66, 0.2)',
+                            pb: 0.5,
+                        }}
+                    >
                         OSRS Alching Methods
                     </Typography>
                     <Typography sx={{ color: "#AAAAAA", marginTop: "8px", fontFamily: '"Rubik", "Inter", sans-serif' }}>
                         Alching is a great way to make money in OSRS! Check out the methods below.
                     </Typography>
                 </Grid>
-
+                <Pagegination
+                    currentPage={currentPage}
+                    totalPage={totalPage}
+                    changePage={changePage}
+                    refreshData={refreshData}
+                />
                 <Grid item xs={12} sx={{ width: "100%", maxWidth: 1000 }}>
                     <SharedTable
                         columns={columns}
@@ -41,6 +62,8 @@ export default function AlchContainer() {
                         sortColumn={sortColumn}
                         handleSort={handleSort}
                         tableType={tableType}
+                        currentPage={currentPage}
+                        itemsPerPage={itemsPerPage}
                     />
                 </Grid>
             </CenteredGrid>

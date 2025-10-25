@@ -12,8 +12,7 @@ import { RuneToolbar,RuneAppBar, RuneTab,RuneTabs, LogoBox,
 
 import { useAuth } from "../context/auth/AuthState";
 import { doSignOut } from "../firebase/auth";
-import logout from "../assets/pictures/logout.png";
-
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 // 🎨 Styled Components
 
 // Map a route path to the corresponding tab index (pure function for stable deps)
@@ -104,7 +103,9 @@ export default function Navbar() {
                         alt="Dragon Logo"
                         style={{ 
                             height: getLogoSize(), 
-                            marginRight: getLogoMargin()
+                            marginRight: getLogoMargin(),
+                            filter: "drop-shadow(0 2px 8px rgba(245, 200, 66, 0.3))"
+                            
                         }}
                     />
                     <Title>RuneScape Money Making</Title>
@@ -127,18 +128,14 @@ export default function Navbar() {
                         {!userLoggedIn && <RuneTab label="Register" />}
                         
                         {userLoggedIn && (
-                            <img
-                                src={logout}
-                                alt="Logout"
-                                style={logoutIconStyle}
-                                {...logoutIconHoverHandlers}
-                                onClick={() => {
-                                    doSignOut();
-                                    navigate('/');
-                                    setValue(0);
-                                }}
-                        />)}
+                            <ExitToAppIcon sx={logoutIconStyle} {...logoutIconHoverHandlers} onClick={() => {
+                            doSignOut();
+                            navigate('/');
+                            setValue(0);
+                        }} />
+                        )}
                         
+
                     </RuneTabs>
                 </Box>
             </RuneToolbar>

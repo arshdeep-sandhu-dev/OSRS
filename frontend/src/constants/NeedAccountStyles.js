@@ -93,3 +93,33 @@ export const outlineButtonSx = {
     color: "rgba(245,200,66,0.5)",
   },
 };
+export const nonOutlineButtonSx = {
+  borderColor: BRIGHT_GOLD,
+  color: BRIGHT_GOLD,
+  fontWeight: 600,
+  letterSpacing: "0.02em",
+  textTransform: "none",
+  fontFamily: '"Rubik", "Inter", sans-serif',
+  borderRadius: "10px",
+  py: 1.25,
+  px: 2.75,
+  transition:
+    "transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease",
+  "&:hover": {
+    borderColor: "#D4A844",
+    backgroundColor: "rgba(235, 192, 82, 0.08)",
+    boxShadow: "0 6px 16px rgba(245,200,66,0.15)",
+    transform: "translateY(-1px)",
+  },
+  "&:active": {
+    transform: "translateY(0)",
+  },
+  "&:focus-visible": {
+    outline: "2px solid rgba(245,200,66,0.5)",
+    outlineOffset: "2px",
+  },
+  "&:disabled": {
+    borderColor: "rgba(245,200,66,0.3)",
+    color: "rgba(245,200,66,0.5)",
+  },
+};

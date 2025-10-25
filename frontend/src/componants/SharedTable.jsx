@@ -7,12 +7,15 @@ import SharedTableColumns from "../constants/SharedTableColumns";
 
 
 export default function SharedTable({ children, ...props }) {
-    const {sortedMetrics, sortColumn, sortDirection, handleSort, tableType } = props;
+  const {sortedMetrics, sortColumn, sortDirection, handleSort, tableType, currentPage = 1, itemsPerPage = 25 } = props;
     const columns = SharedTableColumns(tableType);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const pageRows = Array.isArray(sortedMetrics) ? sortedMetrics.slice(startIndex, endIndex) : [];
 
     return (
-        <RuneTableContainer component={Paper}>
-            <Table>
+    <RuneTableContainer component={Paper} sx={{ overflowX: "auto" }}>
+      <Table key={`${currentPage}-${itemsPerPage}`}>
               <TableHead >
                 <TableRow>
                   {columns.map((col) => (
@@ -42,7 +45,7 @@ export default function SharedTable({ children, ...props }) {
               </TableHead>
 
               <TableBody>
-                {sortedMetrics.map((row, idx) => (
+                {pageRows.map((row, idx) => (
                   <RuneTableRow key={idx}>
                     {columns.map((col, colIdx) => (
                       <RuneTableCellBody 

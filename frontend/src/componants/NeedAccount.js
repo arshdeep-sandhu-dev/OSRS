@@ -8,7 +8,7 @@ export default function NeedAccount(props) {
     const navigate = useNavigate();
 
     return (
-        <React.Fragment>
+        <React.Fragment >
             {userLoggedIn ? (
                 <>{children}</>
             ) : (

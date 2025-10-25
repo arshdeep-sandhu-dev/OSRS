@@ -1,5 +1,5 @@
 import { createContext } from "react";
 
-const HomeContext = createContext();
+const FlippingContext = createContext();
 
-export default HomeContext;
+export default FlippingContext;

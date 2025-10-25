@@ -1,0 +1,35 @@
+/* Rotated icon style for pagination arrows */
+.rotated-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    filter: brightness(0) saturate(100%) invert(74%) sepia(58%) saturate(348%) hue-rotate(6deg) brightness(95%) contrast(97%);
+    transition: all 0.2s ease;
+    transform: rotate(180deg);
+}
+
+.rotated-icon:hover {
+    filter: brightness(0) saturate(100%) invert(100%);
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    filter: brightness(0) saturate(100%) invert(74%) sepia(58%) saturate(348%) hue-rotate(6deg) brightness(95%) contrast(97%);
+    transition: all 0.2s ease;
+}
+.icon:hover {
+    filter: brightness(0) saturate(100%) invert(100%);
+}
+
+
+.input-field {
+    border-radius: 6px;
+    filter: brightness(0) saturate(100%) invert(74%) sepia(58%) saturate(348%) hue-rotate(6deg) brightness(95%) contrast(97%);
+    cursor: pointer;
+}
