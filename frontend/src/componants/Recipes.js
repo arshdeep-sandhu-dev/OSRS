@@ -21,15 +21,12 @@ export default function Recipes(props) {
         recipes,
         DeleteRecipe,
         updatingRecipeIndex,
-        setUpdatingRecipeIndex
+        setUpdatingRecipeIndex,
+        nameMappingsMap,
     } = props;
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const isTablet = useMediaQuery(theme.breakpoints.down('md'));
-    const nameMappings = useItemMapping().options;
-    const nameMappingsMap = useMemo(
-        () => new Map((nameMappings || []).map(item => [item.id, item.label])),
-        [nameMappings]
-    );
+    
     
     // which card is hovered/focused + its DOM anchor
     const [hovered, setHovered] = useState(null);
@@ -52,12 +49,6 @@ export default function Recipes(props) {
                 
                 return (
                     <React.Fragment key={recipe.recipeIndex}>
-                        
-                        {console.log("Rendering recipe:", recipe)}
-                        {((updatingRecipeIndex === recipe.recipeIndex)) ? (
-                            
-                            <RecipeForm recipe={recipe} addingRecipe={true} items={recipe.inputs} itemName={setItemName}  />
-                        ) : (
                             <React.Fragment >
                                 <Box
                                     tabIndex={0}
@@ -187,7 +178,7 @@ export default function Recipes(props) {
                                     </Paper>
                                 </Popper>
                             </React.Fragment>
-                        )}
+
                     </React.Fragment>
                 );
             })}

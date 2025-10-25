@@ -1,4 +1,4 @@
-import { Grid, Box } from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
 import { PageWrapper, BRIGHT_GOLD } from "../constants/style";
 import { useAuth } from "../context/auth/AuthState";
 import NeedAccount from '../componants/NeedAccount';
@@ -9,8 +9,9 @@ import FlippingContext from '../context/flipping/FlippingContext.jsx';
 import useItemMapping from '../hooks/useItemMapping.js';
 import { useMemo } from 'react';
 import Recipes from '../componants/Recipes.js';
+
 export default function FlippingContainer(props) {
-    const { successMessage, UpdateRecipe, nameMappings, updatingRecipeIndex, setUpdatingRecipeIndex, setSuccessMessage, addingRecipe, setAddingRecipe, items, setItems, itemName, setItemName, postUserRecipes, recipes, setRecipes, DeleteRecipe } = useContext(FlippingContext);
+    const { successMessage, UpdateRecipe, nameMappingsMap, updatingRecipeIndex, setUpdatingRecipeIndex, setSuccessMessage, addingRecipe, setAddingRecipe, items, setItems, itemName, setItemName, postUserRecipes, recipes, setRecipes, DeleteRecipe } = useContext(FlippingContext);
     const { userLoggedIn } = useAuth();
     
     const currentUser = useAuth().currentUser;
@@ -46,6 +47,7 @@ export default function FlippingContainer(props) {
                         </Snackbar>
                     )}
                 </Grid>
+                
                 <Grid item xs={12} sx={{ justifyContent: 'center', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Grid
@@ -57,7 +59,7 @@ export default function FlippingContainer(props) {
                         >
                             <Recipes
                                 recipes={recipes}
-                                nameMappingsMap={nameMappings}
+                                nameMappingsMap={nameMappingsMap}
                                 DeleteRecipe={DeleteRecipe}
                                 updatingRecipeIndex={updatingRecipeIndex}
                                 setUpdatingRecipeIndex={setUpdatingRecipeIndex}

@@ -12,8 +12,7 @@ export default function FlippingState({ children }) {
   
   const [recipes, setRecipes] = useState([]);
   const [updatingRecipeIndex, setUpdatingRecipeIndex] = useState(null);
-  const nameMappings = useItemMapping().options;
-  const mappingsLoading = useItemMapping().loading;
+  const { options: nameMappings = [], loading: mappingsLoading } = useItemMapping();
   const nameMappingsMap = useMemo(
           () => new Map((nameMappings || []).map(item => [item.id, item.label])),
           [nameMappings]
@@ -120,17 +119,21 @@ export default function FlippingState({ children }) {
   };
 
   useEffect(() => {
-    if (!currentUser || mappingsLoading || nameMappingsMap.size === 0) {
+    console.log("CurrentUser or mappingsLoading or nameMappingsMap changed:", currentUser, mappingsLoading, nameMappingsMap);
+    if (!currentUser) {
       setRecipes([]);
       return;
     }
 
     fetchRecipes();
-  }, [currentUser, mappingsLoading, nameMappingsMap]);
+  }, [currentUser]);
 
   useEffect(() => {
+    console.log("Recipes changed:", recipes);
     if (recipes.length === 0) {
       setAddingRecipe(true);
+    } else {
+      setAddingRecipe(false);
     }
   }, [recipes]);
 

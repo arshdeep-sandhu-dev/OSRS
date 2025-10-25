@@ -10,6 +10,7 @@ export default function useItemMapping() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    
     if (cachedOptions) {
       setOptions(cachedOptions);
       setLoading(false);
@@ -19,11 +20,14 @@ export default function useItemMapping() {
     if (!inflight) {
       inflight = ApiClient()
         .GET('mappings')
+        .then(console.log("Fetched item mappings"))
         .then((data) => data.map((item) => ({ label: item.name, id: item.id })))
         .then((opts) => {
           cachedOptions = opts;
           return opts;
         });
+        
+        
     }
 
     inflight
