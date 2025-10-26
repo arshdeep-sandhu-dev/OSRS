@@ -92,7 +92,7 @@ export default function RecipeForm(props) {
                             <ItemAutoComplete value={itemName} onChange={setItemName} placeholder="Add a New Flipping Recipe" sx={{ variant: "h6", color: BRIGHT_GOLD, mb: 0, width: '100%' }} />
                             {console.log("RecipeForm items:", items)}
                             {items.map((entry, index) => (
-
+                                
                                 <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 0, mb: 0 }}>
                                     <ItemSearchBox
                                         value={entry.item}

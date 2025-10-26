@@ -94,7 +94,7 @@ export default function FlippingState({ children }) {
       console.error("Latest prices mapping is empty or undefined.");
     }
     tempRecipes.forEach((recipe) => {
-
+      console.log("Processing NAMEMAPP:", nameMappingsMap);
       recipe.inputs.forEach((input) => {
         input.name = nameMappingsMap.get(input.itemId) || "Unknown Item";
         input.highPrice = PriceFormatting(mapping[input.itemId]?.highPrice || null);
@@ -119,14 +119,13 @@ export default function FlippingState({ children }) {
   };
 
   useEffect(() => {
-    console.log("CurrentUser or mappingsLoading or nameMappingsMap changed:", currentUser, mappingsLoading, nameMappingsMap);
-    if (!currentUser) {
-      setRecipes([]);
+    console.log("Fetch guard:", { currentUser, mappingsLoading, nameMappingsLength: nameMappings.length });
+    if (!currentUser || mappingsLoading || nameMappings.length === 0) {
+      if (recipes.length !== 0) setRecipes([]); // avoid unnecessary state churn
       return;
     }
-
     fetchRecipes();
-  }, [currentUser]);
+  }, [currentUser, mappingsLoading, nameMappings.length]);
 
   useEffect(() => {
     console.log("Recipes changed:", recipes);

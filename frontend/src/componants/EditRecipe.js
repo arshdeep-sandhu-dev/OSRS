@@ -12,22 +12,23 @@ export default function EditRecipe(props) {
     // items: [{ item: {label,id} | null, qty: number }]
     const maxItems = 5;
     const [submitError, setSubmitError] = useState("");
-    const [items, setItems] = useState([{ item: null, qty: null }]);
-    const [itemName, setItemName] = useState("");
     const { setSuccessMessage,
         currentUser,
         postUserRecipes,
         recipes,
         addingRecipe,
         setAddingRecipe,
-
+        updatingRecipeIndex,
+        setUpdatingRecipeIndex,
+        itemName, setItemName,
+        setItems, items
     } = props;
     const handleDeleteAll = () => {
 
         setItems([{ item: null, qty: null }]);
         setItemName("");
-        setAddingRecipe(false);
         setSubmitError("");
+        setUpdatingRecipeIndex(null);
     };
     const handleSubmit = () => {
         // Submit logic here
@@ -70,17 +71,8 @@ export default function EditRecipe(props) {
         setItems(prev => [...prev, { item: null, qty: null }]);
     };
     return (
-        <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '1vw', width: '90%' }}>
-            {!addingRecipe ?
-                (
-                    <Button sx={{ ...outlineButtonSx, padding: 0, minWidth: 'auto' }}
-                        onClick={() => setAddingRecipe(true)}
-                    >
-                        <AddIcon sx={{ fontSize: '2rem' }} />
-                    </Button>
-
-                )
-                : (
+        <Grid item xs={12} style={{position : 'absolute', top: '50%', left: '50%', zIndex: 10, transform: 'translate(-50%, -50%)'}}>
+            {updatingRecipeIndex && (
                     <Grid container spacing={2} sx={{ width: '100%', justifyContent: 'flex-start' }}>
 
 
@@ -157,8 +149,7 @@ export default function EditRecipe(props) {
 
 
                     </Grid>
-                )
-            }
+                )}
         </Grid>
     )
 }

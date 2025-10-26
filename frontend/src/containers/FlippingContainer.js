@@ -9,11 +9,13 @@ import FlippingContext from '../context/flipping/FlippingContext.jsx';
 import useItemMapping from '../hooks/useItemMapping.js';
 import { useMemo } from 'react';
 import Recipes from '../componants/Recipes.js';
-
+import EditRecipe from '../componants/EditRecipe.js';
+import { useState } from 'react';
 export default function FlippingContainer(props) {
     const { successMessage, UpdateRecipe, nameMappingsMap, updatingRecipeIndex, setUpdatingRecipeIndex, setSuccessMessage, addingRecipe, setAddingRecipe, items, setItems, itemName, setItemName, postUserRecipes, recipes, setRecipes, DeleteRecipe } = useContext(FlippingContext);
     const { userLoggedIn } = useAuth();
-    
+    const [editItemName, setEditItemName] = useState("");
+    const [editItems, setEditItems] = useState([{ item: null, qty: null }]);
     const currentUser = useAuth().currentUser;
 
     return (
@@ -47,7 +49,16 @@ export default function FlippingContainer(props) {
                         </Snackbar>
                     )}
                 </Grid>
-                
+                <EditRecipe
+                    updatingRecipeIndex={updatingRecipeIndex}
+                    setUpdatingRecipeIndex={setUpdatingRecipeIndex}
+                    UpdateRecipe={UpdateRecipe}
+                    addingRecipe={false}
+                    setItemName={setEditItemName}
+                    itemName={editItemName}
+                    items={editItems}
+                    setItems={setEditItems}
+                />
                 <Grid item xs={12} sx={{ justifyContent: 'center', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Grid
@@ -64,7 +75,10 @@ export default function FlippingContainer(props) {
                                 updatingRecipeIndex={updatingRecipeIndex}
                                 setUpdatingRecipeIndex={setUpdatingRecipeIndex}
                                 UpdateRecipe={UpdateRecipe}
-                            
+                                setItemName={setEditItemName}
+                                ItemName={editItemName}
+                                setItems={setEditItems}
+                                items={editItems}
                             />
                         </Grid>
                     </Box>

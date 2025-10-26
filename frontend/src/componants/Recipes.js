@@ -23,6 +23,10 @@ export default function Recipes(props) {
         updatingRecipeIndex,
         setUpdatingRecipeIndex,
         nameMappingsMap,
+        ItemName,
+        setItemName,
+        items,
+        setItems
     } = props;
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const isTablet = useMediaQuery(theme.breakpoints.down('md'));
@@ -31,7 +35,6 @@ export default function Recipes(props) {
     // which card is hovered/focused + its DOM anchor
     const [hovered, setHovered] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [itemName, setItemName] = useState(null);
     const getItemFieldSize = () => {
         if (isMobile) return "9rem";
         if (isTablet) return "9rem";
@@ -44,6 +47,7 @@ export default function Recipes(props) {
 
     return (
         <React.Fragment>
+            {console.log("Rendering Recipes with MAPPINGS:", nameMappingsMap)}
             {recipes.map((recipe) => {
                 const open = hovered === recipe.recipeIndex;
                 
@@ -108,6 +112,9 @@ export default function Recipes(props) {
                                             <EditIcon
                                                 onClick={() => { setUpdatingRecipeIndex(recipe.recipeIndex);
                                                     setItemName(nameMappingsMap.get(recipe.itemId) || recipe.name);
+                                                    setItems(recipe.inputs);
+                                                    console.log("ITEMSSS INPUTT", recipe.inputs);
+                                                    console.log("ITEMSSS", items);
                                                 }}
                                                 sx={{ cursor: 'pointer' }}
                                             />
