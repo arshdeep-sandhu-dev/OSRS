@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { nonOutlineButtonSx, outlineButtonSx } from "../constants/NeedAccountStyles.js";
-import { Button, Grid, Box, Alert } from "@mui/material";
+import { Button, Grid, Box, Alert, Typography } from "@mui/material";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
 import { formPaperSx } from "../constants/RegistryBoxStyles.js";
@@ -12,16 +12,14 @@ export default function EditRecipe(props) {
     // items: [{ item: {label,id} | null, qty: number }]
     const maxItems = 5;
     const [submitError, setSubmitError] = useState("");
-    const { setSuccessMessage,
+    const { 
+        setSuccessMessage,
         currentUser,
-        postUserRecipes,
-        recipes,
-        addingRecipe,
-        setAddingRecipe,
         updatingRecipeIndex,
         setUpdatingRecipeIndex,
         itemName, setItemName,
-        setItems, items
+        setItems, items,
+        PutRecipe
     } = props;
     const handleDeleteAll = () => {
 
@@ -41,20 +39,21 @@ export default function EditRecipe(props) {
             setSubmitError("All item quantities must be greater than 0.");
             return;
         }
+        for (let i = 0; i < items.length; i++) {
+            for (let j = i + 1; j < items.length; j++) {
+                if (items[i].item.id === items[j].item.id) {
+                    setSubmitError("Duplicate items detected. Please ensure all items are unique.");
+                    return;
+                }
+            }
+        }
         //postUserRecipes({items: items });
-        const itemIds = items.map(item => ({ itemId: item.item.id, quantity: item.qty }));
-        const userRecipe = {
-            recipeIndex: recipes.length,
-            ownerUid: currentUser.uid,
-            itemId: itemName.id,
-            inputs: itemIds,
-        };
+        const inputs = items.map(item => ({ itemId: item.item.id, quantity: item.qty }));
 
-
-        postUserRecipes(userRecipe)
+        PutRecipe(currentUser.uid, updatingRecipeIndex, inputs)
             .then(() => {
                 setSubmitError("");
-                setSuccessMessage("Recipe submitted successfully!");
+                setSuccessMessage("Recipe Changed successfully!");
                 handleDeleteAll();
             })
             .catch((error) => {
@@ -72,17 +71,15 @@ export default function EditRecipe(props) {
     };
     return (
         <Grid item xs={12} style={{position : 'absolute', top: '50%', left: '50%', zIndex: 10, transform: 'translate(-50%, -50%)'}}>
-            {updatingRecipeIndex && (
+            {updatingRecipeIndex !== null && (
                     <Grid container spacing={2} sx={{ width: '100%', justifyContent: 'flex-start' }}>
 
 
                         <Box item xs={2} sx={formPaperSx} style={{ width: 'fit-content', padding: '1rem', minWidth: '15vw', }}>
-                            {/* <Typography contentEditable
-                                suppressContentEditableWarning variant="h6" sx={{ color: BRIGHT_GOLD, mb: 0, width: '100%' }}>
-                                Add a New Flipping Recipe
-                            </Typography> */}
-                            <ItemAutoComplete value={itemName} onChange={setItemName} placeholder="Add a New Flipping Recipe" sx={{ variant: "h6", color: BRIGHT_GOLD, mb: 0, width: '100%' }} />
-                            {console.log("RecipeForm items:", items)}
+                            
+                            <Typography sx={{ variant: "button-text", color: BRIGHT_GOLD, mb: 0, width: '100%' }}>
+                                {itemName}
+                            </Typography>
                             {items.map((entry, index) => (
 
                                 <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 0, mb: 0 }}>

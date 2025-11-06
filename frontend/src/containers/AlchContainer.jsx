@@ -17,7 +17,6 @@ import { BRIGHT_GOLD } from "../constants/style";
 export default function AlchContainer() {
     
     const {
-        columns,
         handleSort,
         sortedMetrics,
         sortColumn,
@@ -53,10 +52,10 @@ export default function AlchContainer() {
                     totalPage={totalPage}
                     changePage={changePage}
                     refreshData={refreshData}
+                    sx={{ width: "100%", maxWidth: 1000, display: "flex", justifyContent: "space-between", alignItems: "center" }}
                 />
                 <Grid item xs={12} sx={{ width: "100%", maxWidth: 1000 }}>
                     <SharedTable
-                        columns={columns}
                         sortedMetrics={sortedMetrics}
                         sortDirection={sortDirection}
                         sortColumn={sortColumn}

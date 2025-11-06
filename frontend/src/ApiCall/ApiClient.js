@@ -2,7 +2,7 @@
 
 export function ApiClient() {
   //const API_BASE_URL = "/api";
-    const API_BASE_URL = "http://localhost:8080/api";
+  const API_BASE_URL = "http://localhost:8080/api";
 
 
   async function GET(endpoint) {
@@ -42,13 +42,13 @@ export function ApiClient() {
     return await response.json();
   }
 
-  async function PUT(endpoint, items) {
+  async function PUT(endpoint, body) {
     const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(items),
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {
@@ -58,6 +58,7 @@ export function ApiClient() {
     return await response.json();
   }
 
+  
   return { GET, POST, DELETE, PUT };
 }
 

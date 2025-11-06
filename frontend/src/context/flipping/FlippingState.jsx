@@ -4,36 +4,55 @@ import { ApiClient } from "../../ApiCall/ApiClient";
 import { useAuth } from "../auth/AuthState";
 import useItemMapping from "../../hooks/useItemMapping.js";
 import { useMemo } from "react";
+import { Button, Grid } from "@mui/material";
+import UpdateButtons from "../../componants/UpdateButtons.js"
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import { nonOutlineButtonSx, nonOutlineButtonNoHoverSx } from "../../constants/NeedAccountStyles.js";
+import { hover } from "framer-motion";
 export default function FlippingState({ children }) {
+  const [metrics, setMetrics] = useState([]);
+  const tableType = "flips";
+  const [totalPage, setTotalPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(25);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortColumn, setSortColumn] = useState(null);
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [editItemName, setEditItemName] = useState("");
+  const [editItems, setEditItems] = useState([{ item: null, qty: null }]);
+
+  const formatNumber = (num) => {
+    if (num == null || isNaN(num)) return num;
+    return Math.round(num).toLocaleString('en-US');
+  };
+
   const auth = useAuth();
   const currentUser = auth?.currentUser || null;
   const [successMessage, setSuccessMessage] = useState("");
   const [addingRecipe, setAddingRecipe] = useState(false);
-  
+
   const [recipes, setRecipes] = useState([]);
   const [updatingRecipeIndex, setUpdatingRecipeIndex] = useState(null);
   const { options: nameMappings = [], loading: mappingsLoading } = useItemMapping();
   const nameMappingsMap = useMemo(
-          () => new Map((nameMappings || []).map(item => [item.id, item.label])),
-          [nameMappings]
-      );
+    () => new Map((nameMappings || []).map(item => [item.id, item.label])),
+    [nameMappings]
+  );
   const findPrifittability = (recipe) => {
     let totalInputCost = 0;
     recipe.inputs.forEach((input) => {
-      console.log("Input lowPrice:", input.lowPrice);
       const lowPrice = parseInt(input.lowPrice?.replace(/,/g, '')) || 0;
       totalInputCost += lowPrice * input.qty;
     });
     const sellPrice = parseInt(recipe.buyPrice?.replace(/,/g, '')) || 0;
     const profit = Math.floor(sellPrice - totalInputCost - Math.min(Math.floor(sellPrice * 0.02), 5000000));
     const profitDisplay = profit >= 0 ? `+${profit.toLocaleString()}` : profit.toLocaleString();
-    return `${profitDisplay}`;
+    return `${profit.toLocaleString()}`;
   }
 
   const DeleteRecipe = (recipeIndex) => {
     ApiClient().DELETE(`recipe?ownerUid=${currentUser.uid}&recipeIndex=${recipeIndex}`)
       .then((response) => {
-        console.log("Delete response:", response);
         fetchRecipes();
       })
       .catch((error) => {
@@ -41,10 +60,9 @@ export default function FlippingState({ children }) {
       });
 
   }
-  const UpdateRecipe = (recipeIndex, updatedData) => {
-    ApiClient().PUT(`recipe?ownerUid=${currentUser.uid}&recipeIndex=${recipeIndex}`, updatedData)
+  const UpdateRecipe = async (user_uid, recipe) => {
+    ApiClient().PUT(`recipe`, recipe)
       .then((response) => {
-        console.log("Update response:", response);
         fetchRecipes();
       })
       .catch((error) => {
@@ -77,11 +95,12 @@ export default function FlippingState({ children }) {
 
     return price.toLocaleString('en-US'); // "1,234,567.89"
   }
+
+  
   const fetchRecipes = async () => {
     try {
       const api = ApiClient();
       const data = await api.GET(`recipes?owner_uid=${currentUser.uid}`);
-      console.log("Fetched recipes:", data);
       handleData(data);
     } catch (error) {
       console.error("Error fetching recipes:", error);
@@ -94,7 +113,6 @@ export default function FlippingState({ children }) {
       console.error("Latest prices mapping is empty or undefined.");
     }
     tempRecipes.forEach((recipe) => {
-      console.log("Processing NAMEMAPP:", nameMappingsMap);
       recipe.inputs.forEach((input) => {
         input.name = nameMappingsMap.get(input.itemId) || "Unknown Item";
         input.highPrice = PriceFormatting(mapping[input.itemId]?.highPrice || null);
@@ -102,8 +120,10 @@ export default function FlippingState({ children }) {
         input.highTime = UnixToDate(mapping[input.itemId]?.highTime || null);
         input.lowTime = UnixToDate(mapping[input.itemId]?.lowTime || null);
         input.qty = input.quantity ? input.quantity : null;
-        input.item= { id: input.itemId, label: input.name}
+        input.item = { id: input.itemId, label: input.name }
         input.quantity = input.qty;
+        input.qtyTable = "Qty - " + input.qty;
+
 
       });
       recipe.buyPrice = PriceFormatting(mapping[recipe.itemId]?.highPrice || null);
@@ -112,29 +132,47 @@ export default function FlippingState({ children }) {
       recipe.sellTime = UnixToDate(mapping[recipe.itemId]?.lowTime || null);
       recipe.name = nameMappingsMap.get(recipe.itemId) || "Unknown Item";
       recipe.profitability = findPrifittability(recipe);
+      const buttonEl = <UpdateButtons
+        recipe={recipe}
+        DeleteRecipe={DeleteRecipe}
+        setUpdatingRecipeIndex={setUpdatingRecipeIndex}
+        setItemName={setEditItemName}
+        itemName={editItemName}
+        nameMappingsMap={nameMappingsMap}
+        setItems={setEditItems}
+        table={true}
+      />;
+      const tableName = 
+      <Grid sx={{display: "flex", alignItems: "center", flexDirection: "row"}}>
+        <Grid>
+            <ArrowDropDownIcon sx={{...nonOutlineButtonNoHoverSx, borderRadius: "4px", py: 0, px: 0, marginRight: "1rem"}}/>
+        </Grid>
+        <Grid>
+          {recipe.name}
+        </Grid>
+      </Grid>;
+      recipe.tableName = tableName;
+      recipe.edit = buttonEl; // React element in a variable
+      // recipe.profitability = recipe.profitability.startsWith('+') ? recipe.profitability.substring(1) : recipe.profitability;
 
     });
-    console.log("Processed recipes with latest prices:", tempRecipes);
     setRecipes(tempRecipes);
+    setMetrics(tempRecipes);
+    setTotalPage(Math.ceil(tempRecipes.length / itemsPerPage)); // Assuming all data fits on one page for simplicity
   };
 
-  useEffect(() => {
-    console.log("Fetch guard:", { currentUser, mappingsLoading, nameMappingsLength: nameMappings.length });
-    if (!currentUser || mappingsLoading || nameMappings.length === 0) {
-      if (recipes.length !== 0) setRecipes([]); // avoid unnecessary state churn
-      return;
-    }
-    fetchRecipes();
-  }, [currentUser, mappingsLoading, nameMappings.length]);
 
-  useEffect(() => {
-    console.log("Recipes changed:", recipes);
-    if (recipes.length === 0) {
-      setAddingRecipe(true);
-    } else {
-      setAddingRecipe(false);
+  const PutRecipe = async (owner_uid, recipeIndex, inputs) => {
+    try {
+      const api = ApiClient();
+      const result = await api.PUT(`recipe/${owner_uid}/index/${recipeIndex}`, inputs);
+      await fetchRecipes();
+      return result;
+    } catch (error) {
+      console.error("Error updating recipe data:", error);
+      throw error;
     }
-  }, [recipes]);
+  };
 
   const postUserRecipes = async (recipe) => {
     try {
@@ -147,6 +185,86 @@ export default function FlippingState({ children }) {
       throw error;
     }
   };
+
+
+
+
+  const handleSort = (columnId) => {
+    if (sortColumn === columnId) {
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setSortColumn(columnId);
+      setSortDirection("asc");
+    }
+  };
+  const changePage = (newPage) => {
+    if (newPage < 1 || newPage > Math.ceil(totalPage)) return;
+    setCurrentPage(newPage);
+  };
+
+
+  const sortedMetrics = useMemo(() => {
+    if (!sortColumn || !metrics) return metrics;
+
+
+    return [...metrics].sort((a, b) => {
+      let aVal = a[sortColumn];
+      let bVal = b[sortColumn];
+
+      // Handle null/undefined values
+      if (aVal == null && bVal == null) return 0;
+      if (aVal == null) return 1;
+      if (bVal == null) return -1;
+
+      // For numeric columns (profit, cost, buyLimit), parse the formatted strings
+      if (sortColumn === "profit" || sortColumn === "profitability" || sortColumn === "sellPrice" || sortColumn === "cost" || sortColumn === "buyLimit") {
+        // Remove commas, plus signs, and parse as number
+        aVal = typeof aVal === 'string' ? parseFloat(aVal.replace(/[,+]/g, '')) : aVal;
+        bVal = typeof bVal === 'string' ? parseFloat(bVal.replace(/[,+]/g, '')) : bVal;
+
+
+        return sortDirection === "asc" ? aVal - bVal : bVal - aVal;
+      }
+
+      // For string columns (itemName)
+      return sortDirection === "asc"
+        ? String(aVal).localeCompare(String(bVal))
+        : String(bVal).localeCompare(String(aVal));
+    });
+  }, [metrics, sortColumn, sortDirection]);
+
+  useEffect(() => {
+    if (!currentUser || mappingsLoading || nameMappings.length === 0) {
+      if (recipes.length !== 0) setRecipes([]); // avoid unnecessary state churn
+      return;
+    }
+    fetchRecipes();
+  }, [currentUser, mappingsLoading, nameMappings.length]);
+
+  useEffect(() => {
+    if (recipes.length === 0) {
+      setAddingRecipe(true);
+    } else {
+      setAddingRecipe(false);
+    }
+  }, [recipes]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (currentUser && !mappingsLoading && nameMappings.length > 0) {
+        fetchRecipes();
+      }
+    }, 20000);
+
+    return () => clearInterval(id); // cleanup on unmount
+  }, [fetchRecipes]);
+
+  useEffect(() => {
+    setSortColumn("profit");
+    setSortDirection("desc");
+  }, [window.onload]);
+
+
 
   const value = {
     successMessage,
@@ -161,6 +279,28 @@ export default function FlippingState({ children }) {
     updatingRecipeIndex,
     setUpdatingRecipeIndex,
     nameMappingsMap,
+    PutRecipe,
+
+
+    metrics,
+    handleSort,
+    sortedMetrics,
+    sortColumn,
+    sortDirection,
+    setMetrics,
+    setSortColumn,
+    setSortDirection,
+    tableType,
+    totalPage,
+    itemsPerPage,
+    currentPage,
+    setCurrentPage,
+    changePage,
+    setEditItemName,
+    editItemName,
+    editItems,
+    setEditItems,
+    fetchRecipes
   };
 
   return (

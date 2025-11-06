@@ -123,3 +123,15 @@ export const nonOutlineButtonSx = {
     color: "rgba(245,200,66,0.5)",
   },
 };
+
+// Variant without hover effects (for icons or places where hover should be neutral)
+export const nonOutlineButtonNoHoverSx = {
+  ...nonOutlineButtonSx,
+  "&:hover": {
+    // neutralize hover visuals
+    borderColor: BRIGHT_GOLD,
+    backgroundColor: "transparent",
+    boxShadow: "none",
+    transform: "none",
+  },
+};

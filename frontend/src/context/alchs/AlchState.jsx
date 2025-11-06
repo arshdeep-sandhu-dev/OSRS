@@ -8,6 +8,7 @@ const formatNumber = (num) => {
   return Math.round(num).toLocaleString('en-US');
 };
 
+
 export default function AlchState({ children }) {
   const [metrics, setMetrics] = useState([]);
   const tableType = "alchs";

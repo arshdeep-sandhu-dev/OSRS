@@ -40,6 +40,14 @@ export default function RecipeForm(props) {
             setSubmitError("All item quantities must be greater than 0.");
             return;
         }
+        for (let i = 0; i < items.length; i++) {
+            for (let j = i + 1; j < items.length; j++) {
+                if (items[i].item.id === items[j].item.id) {
+                    setSubmitError("Duplicate items detected. Please ensure all items are unique.");
+                    return;
+                }
+            }
+        }
         //postUserRecipes({items: items });
         const itemIds = items.map(item => ({ itemId: item.item.id, quantity: item.qty }));
         const userRecipe = {
@@ -81,81 +89,79 @@ export default function RecipeForm(props) {
 
                 )
                 : (
-                    <Grid container spacing={2} sx={{ width: '100%', justifyContent: 'flex-start' }}>
+                    <Grid item xs={12} style={{position : 'absolute', top: '50%', left: '50%', zIndex: 10, transform: 'translate(-50%, -50%)'}}>
+                        <Grid container spacing={2} sx={{ width: '100%', justifyContent: 'flex-start' }}>
 
 
-                        <Box item xs={2} sx={formPaperSx} style={{ width: 'fit-content', padding: '1rem', minWidth: '15vw', }}>
-                            {/* <Typography contentEditable
-                                suppressContentEditableWarning variant="h6" sx={{ color: BRIGHT_GOLD, mb: 0, width: '100%' }}>
-                                Add a New Flipping Recipe
-                            </Typography> */}
-                            <ItemAutoComplete value={itemName} onChange={setItemName} placeholder="Add a New Flipping Recipe" sx={{ variant: "h6", color: BRIGHT_GOLD, mb: 0, width: '100%' }} />
-                            {console.log("RecipeForm items:", items)}
-                            {items.map((entry, index) => (
-                                
-                                <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 0, mb: 0 }}>
-                                    <ItemSearchBox
-                                        value={entry.item}
-                                        onChange={(newItem) => {
-                                            setItems(prev => prev.map((e, i) => i === index ? { ...e, item: newItem } : e));
+                            <Box item xs={2} sx={formPaperSx} style={{ width: 'fit-content', padding: '1rem', minWidth: '15vw', }}>
+
+                                <ItemAutoComplete value={itemName} onChange={setItemName} placeholder="Add a New Flipping Recipe" sx={{ variant: "h6", color: BRIGHT_GOLD, mb: 0, width: '100%' }} />
+                                {items.map((entry, index) => (
+
+                                    <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 0, mb: 0 }}>
+                                        <ItemSearchBox
+                                            value={entry.item}
+                                            onChange={(newItem) => {
+                                                setItems(prev => prev.map((e, i) => i === index ? { ...e, item: newItem } : e));
+                                            }}
+                                            qty={entry.qty}
+                                            onQtyChange={(newQty) => {
+                                                setItems(prev => prev.map((e, i) => i === index ? { ...e, qty: newQty } : e));
+                                            }}
+                                        />
+                                        {(index !== 0) && (
+                                            <Button sx={{ ...nonOutlineButtonSx, minWidth: 'auto', height: '2rem', width: '2rem' }}
+                                                onClick={() => setItems(prev => prev.filter((_, i) => i !== index))}
+                                            >
+                                                ✕
+                                            </Button>
+                                        )}
+                                    </Box>
+                                ))}
+                                {submitError && (
+                                    <Alert
+                                        severity="error"
+                                        onClose={() => setSubmitError("")}
+                                        sx={{
+                                            mt: 1,
+                                            mb: 1,
+                                            backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                                            color: '#FCA5A5',
+                                            border: '1px solid rgba(239, 68, 68, 0.3)',
+                                            '& .MuiAlert-icon': {
+                                                color: '#F87171'
+                                            }
                                         }}
-                                        qty={entry.qty}
-                                        onQtyChange={(newQty) => {
-                                            setItems(prev => prev.map((e, i) => i === index ? { ...e, qty: newQty } : e));
-                                        }}
-                                    />
-                                    {index !== 0 && (
-                                        <Button sx={{ ...nonOutlineButtonSx, minWidth: 'auto', height: '2rem', width: '2rem' }}
-                                            onClick={() => setItems(prev => prev.filter((_, i) => i !== index))}
-                                        >
-                                            ✕
-                                        </Button>
-                                    )}
-                                </Box>
-                            ))}
-                            {submitError && (
-                                <Alert
-                                    severity="error"
-                                    onClose={() => setSubmitError("")}
-                                    sx={{
-                                        mt: 1,
-                                        mb: 1,
-                                        backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                                        color: '#FCA5A5',
-                                        border: '1px solid rgba(239, 68, 68, 0.3)',
-                                        '& .MuiAlert-icon': {
-                                            color: '#F87171'
-                                        }
-                                    }}
-                                >
-                                    {submitError}
-                                </Alert>
-                            )}
+                                    >
+                                        {submitError}
+                                    </Alert>
+                                )}
 
-                            <Grid container justifyContent="space-between" alignItems="center">
-                                <Button sx={{ ...nonOutlineButtonSx, padding: '0.5rem', marginTop: '0.5rem', minWidth: 'auto', height: '2rem', width: '2rem' }}
-                                    onClick={addItem}
-                                >
-                                    <AddIcon sx={{ fontSize: '1.5rem' }} />
-                                </Button>
-                                <Grid item >
+                                <Grid container justifyContent="space-between" alignItems="center">
                                     <Button sx={{ ...nonOutlineButtonSx, padding: '0.5rem', marginTop: '0.5rem', minWidth: 'auto', height: '2rem', width: '2rem' }}
-                                        onClick={handleDeleteAll}
+                                        onClick={addItem}
                                     >
-                                        <DeleteOutlineIcon sx={{ fontSize: '1.5rem' }} />
+                                        <AddIcon sx={{ fontSize: '1.5rem' }} />
                                     </Button>
-                                    <Button sx={{ ...nonOutlineButtonSx, padding: '0.5rem', marginTop: '0.5rem', minWidth: 'auto', height: '2rem', width: '2rem', ml: 1 }}
-                                        onClick={handleSubmit}
-                                    >
-                                        <CheckCircleOutlineIcon sx={{ fontSize: '1.5rem' }} />
-                                    </Button>
+                                    <Grid item >
+                                        <Button sx={{ ...nonOutlineButtonSx, padding: '0.5rem', marginTop: '0.5rem', minWidth: 'auto', height: '2rem', width: '2rem' }}
+                                            onClick={handleDeleteAll}
+                                        >
+                                            <DeleteOutlineIcon sx={{ fontSize: '1.5rem' }} />
+                                        </Button>
+                                        <Button sx={{ ...nonOutlineButtonSx, padding: '0.5rem', marginTop: '0.5rem', minWidth: 'auto', height: '2rem', width: '2rem', ml: 1 }}
+                                            onClick={handleSubmit}
+                                        >
+                                            <CheckCircleOutlineIcon sx={{ fontSize: '1.5rem' }} />
+                                        </Button>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
 
 
-                        </Box>
+                            </Box>
 
 
+                        </Grid>
                     </Grid>
                 )
             }

@@ -14,7 +14,7 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 export function Pagegination(props) {
-    const { currentPage, totalPage, changePage, refreshData } = props;
+    const { currentPage, totalPage, changePage, refreshData,sx } = props;
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const isTablet = useMediaQuery(theme.breakpoints.down('md'));
@@ -25,16 +25,16 @@ export function Pagegination(props) {
     };
     
     return (
-        <Grid item xs={12} sx={{ width: "100%", maxWidth: 1000, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Grid item xs={12} sx={sx}>
             <Grid item xs={12} sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <Button
+                {/* <Button
                     sx={outlineButtonSx}
                     color="primary"
                     style={{ height: getButtonSize(), width: getButtonSize() }}
                     onClick={() => changePage(1)}
                 >
                     <KeyboardDoubleArrowLeftIcon className="icon" sx={{ height: getButtonSize(), width: getButtonSize() }} />
-                </Button>
+                </Button> */}
                 <Button
                     sx={outlineButtonSx}
                     color="primary"
@@ -51,14 +51,14 @@ export function Pagegination(props) {
                 >
                     <KeyboardArrowRightIcon className="icon" sx={{ height: getButtonSize(), width: getButtonSize() }} />
                 </Button>
-                <Button
+                {/* <Button
                     sx={outlineButtonSx}
                     color="primary"
                     style={{ height: getButtonSize(), width: getButtonSize() }}
                     onClick={() => changePage(totalPage)}
                 >
                     <KeyboardDoubleArrowRightIcon className="icon" sx={{ height: getButtonSize(), width: getButtonSize() }} />
-                </Button>
+                </Button> */}
                 <Typography >
                     Page {currentPage} of {Math.ceil(totalPage)}
                 </Typography>

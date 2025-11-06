@@ -18,7 +18,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <AuthProvider>
-          <Navbar />
+          <Navbar />  
           <ErrorState>
             <HomeState>
               <AlchState>

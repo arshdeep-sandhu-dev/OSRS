@@ -74,13 +74,10 @@ export const RuneTableContainer = styled(TableContainer)(({ theme }) => ({
     borderRadius: "16px",
     // shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(245,200,66,0.1)]
     boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(245,200,66,0.1)",
-    // overflow-hidden + border border-[#2A3441]
-    overflow: "hidden",
+    // border border-[#2A3441] and enable horizontal scroll at all sizes
     border: "1px solid #2A3441",
-    // md:overflow-x-auto
-    [theme.breakpoints.up('md')]: {
-        overflowX: "auto",
-    },
+    overflowX: "auto",
+    overflowY: "hidden",
 }));
 
 // 🧾 Table Cells

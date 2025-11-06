@@ -93,7 +93,7 @@ export default function Navbar() {
             flex: 1,
             minWidth: 0,
             maxWidth: '100%',
-            overflowX: 'auto'
+            overflowX: 'auto',
         }}>
             <RuneToolbar  >
                 {/* Logo + Title */}
@@ -108,7 +108,7 @@ export default function Navbar() {
                             
                         }}
                     />
-                    <Title>RuneScape Money Making</Title>
+                    <Title>Old School Runescape Recipe Tracker</Title>
                 </LogoBox>
 
                 {/* Navigation Tabs */}

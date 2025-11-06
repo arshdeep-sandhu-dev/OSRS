@@ -1,5 +1,5 @@
 import { Grid, Box, Typography } from '@mui/material';
-import { PageWrapper, BRIGHT_GOLD } from "../constants/style";
+import { PageWrapper, BRIGHT_GOLD, CenteredGrid } from "../constants/style";
 import { useAuth } from "../context/auth/AuthState";
 import NeedAccount from '../componants/NeedAccount';
 import RecipeForm from '../componants/RecipeForm.js';
@@ -11,15 +11,66 @@ import { useMemo } from 'react';
 import Recipes from '../componants/Recipes.js';
 import EditRecipe from '../componants/EditRecipe.js';
 import { useState } from 'react';
+import { FormGroup, FormControlLabel, Switch } from '@mui/material';
+import SharedTable from "../componants/SharedTable.jsx"
+import { Pagegination } from "../componants/Pagegination.js"
 export default function FlippingContainer(props) {
-    const { successMessage, UpdateRecipe, nameMappingsMap, updatingRecipeIndex, setUpdatingRecipeIndex, setSuccessMessage, addingRecipe, setAddingRecipe, items, setItems, itemName, setItemName, postUserRecipes, recipes, setRecipes, DeleteRecipe } = useContext(FlippingContext);
+    const {
+        successMessage, setSuccessMessage,
+        PutRecipe,
+        UpdateRecipe,
+        nameMappingsMap,
+        updatingRecipeIndex, setUpdatingRecipeIndex,
+        addingRecipe, setAddingRecipe,
+        items, setItems,
+        itemName, setItemName,
+        postUserRecipes,
+        recipes, setRecipes,
+        DeleteRecipe,
+        metrics, setMetrics,
+        handleSort,
+        sortedMetrics,
+        sortColumn, setSortColumn,
+        sortDirection, setSortDirection,
+        tableType,
+        totalPage,
+        itemsPerPage,
+        currentPage, setCurrentPage,
+        changePage,
+        setEditItemName,
+        editItemName,
+        editItems,
+        setEditItems,
+        fetchRecipes
+    } = useContext(FlippingContext);
     const { userLoggedIn } = useAuth();
-    const [editItemName, setEditItemName] = useState("");
-    const [editItems, setEditItems] = useState([{ item: null, qty: null }]);
-    const currentUser = useAuth().currentUser;
 
+    const currentUser = useAuth().currentUser;
+    const [viewCards, setViewCards] = useState(() => {
+        const saved = sessionStorage.getItem("viewCards");
+        return saved !== null ? JSON.parse(saved) : true;
+    });
+
+    let FLIPS = "flips";
     return (
-        <PageWrapper >
+        <PageWrapper sx={{ maxHeight: '100vh' }} style={{ overflowX: 'hidden', overflowY: 'auto' }}>
+
+            {/* blur overlay while editing */}
+            {(currentUser) && (updatingRecipeIndex !== null || addingRecipe) && (
+                <Box
+                    aria-hidden="true"
+                    sx={{
+                        position: 'fixed',
+                        inset: 0,
+                        backdropFilter: 'blur(6px)',
+                        WebkitBackdropFilter: 'blur(6px)',
+                        backgroundColor: 'rgba(0,0,0,0.18)',
+                        zIndex: 1, // below MUI modals (usually 1300) but above page content
+                        pointerEvents: 'auto', // block interaction with background
+                        transition: 'opacity 180ms ease',
+                    }}
+                />
+            )}
 
             <NeedAccount userLoggedIn={userLoggedIn}>
 
@@ -49,17 +100,48 @@ export default function FlippingContainer(props) {
                         </Snackbar>
                     )}
                 </Grid>
-                <EditRecipe
-                    updatingRecipeIndex={updatingRecipeIndex}
-                    setUpdatingRecipeIndex={setUpdatingRecipeIndex}
-                    UpdateRecipe={UpdateRecipe}
-                    addingRecipe={false}
-                    setItemName={setEditItemName}
-                    itemName={editItemName}
-                    items={editItems}
-                    setItems={setEditItems}
-                />
-                <Grid item xs={12} sx={{ justifyContent: 'center', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+
+
+                <Grid item xs={12} sx={{ justifyContent: 'center', display: 'flex', alignItems: 'center', flexDirection: 'column', }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '90%' }}>
+
+                        <FormGroup sx={{ display: 'flex', justifyContent: 'flex-start', width: 'auto' }}>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={viewCards}
+                                        onChange={() => {
+                                            setViewCards(!viewCards);
+                                            sessionStorage.setItem("viewCards", JSON.stringify(!viewCards));
+                                        }}
+                                        sx={{
+                                            '& .MuiSwitch-switchBase.Mui-checked': {
+                                                color: 'white',
+                                            },
+                                            '& .MuiSwitch-switchBase': {
+                                                color: '#4A5568',
+                                            },
+                                            '& .MuiSwitch-track': {
+                                                backgroundColor: '#1E2530',
+                                                opacity: 1,
+                                            },
+                                            '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                                                backgroundColor: '#363A40',
+                                                opacity: 1,
+                                            },
+                                        }}
+                                    />
+                                }
+                                label="View Cards"
+                                sx={{
+                                    '& .MuiFormControlLabel-label': {
+                                        color: '#D0D6DC',
+                                        fontFamily: '"Inter", sans-serif',
+                                    }
+                                }}
+                            />
+                        </FormGroup>
+                    </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Grid
                             container
@@ -68,30 +150,71 @@ export default function FlippingContainer(props) {
                             alignItems="center"
                             spacing={2}
                         >
-                            <Recipes
-                                recipes={recipes}
-                                nameMappingsMap={nameMappingsMap}
-                                DeleteRecipe={DeleteRecipe}
+                            <EditRecipe
+                                currentUser={currentUser}
                                 updatingRecipeIndex={updatingRecipeIndex}
                                 setUpdatingRecipeIndex={setUpdatingRecipeIndex}
-                                UpdateRecipe={UpdateRecipe}
+                                PutRecipe={PutRecipe}
                                 setItemName={setEditItemName}
-                                ItemName={editItemName}
-                                setItems={setEditItems}
+                                itemName={editItemName}
                                 items={editItems}
+                                setItems={setEditItems}
+                                setSuccessMessage={setSuccessMessage}
+                            />
+                            {viewCards ? (
+
+                                <Recipes
+                                    recipes={recipes}
+                                    nameMappingsMap={nameMappingsMap}
+                                    DeleteRecipe={DeleteRecipe}
+                                    updatingRecipeIndex={updatingRecipeIndex}
+                                    setUpdatingRecipeIndex={setUpdatingRecipeIndex}
+                                    UpdateRecipe={UpdateRecipe}
+                                    setItemName={setEditItemName}
+                                    ItemName={editItemName}
+                                    setItems={setEditItems}
+                                    items={editItems}
+
+
+                                />
+                            ) : (
+                                <Grid item sx={{ width: "100vw", maxWidth: "100vw" }}>
+                                    <Pagegination
+                                        sx={{ width: "100%", maxWidth: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                                        currentPage={currentPage}
+                                        totalPage={totalPage}
+                                        changePage={changePage}
+                                        refreshData={fetchRecipes}
+                                    />
+                                    <SharedTable
+                                        sortedMetrics={sortedMetrics}
+                                        sortDirection={sortDirection}
+                                        sortColumn={sortColumn}
+                                        handleSort={handleSort}
+                                        tableType={tableType}
+                                        currentPage={currentPage}
+                                        itemsPerPage={itemsPerPage}
+                                        nameMappingsMap={nameMappingsMap}
+                                    />
+
+                                </Grid>
+                            )
+
+
+                            }
+                            <RecipeForm
+                                setSuccessMessage={setSuccessMessage}
+                                addingRecipe={addingRecipe}
+                                setAddingRecipe={setAddingRecipe}
+                                postUserRecipes={postUserRecipes}
+                                recipes={recipes}
+                                currentUser={currentUser}
+                                setRecipes={setRecipes}
+
                             />
                         </Grid>
                     </Box>
-                    <RecipeForm
-                        setSuccessMessage={setSuccessMessage}
-                        addingRecipe={addingRecipe}
-                        setAddingRecipe={setAddingRecipe}
-                        postUserRecipes={postUserRecipes}
-                        recipes={recipes}
-                        currentUser={currentUser}
-                        setRecipes={setRecipes}
-                        
-                    />
+
                 </Grid>
             </NeedAccount>
 
