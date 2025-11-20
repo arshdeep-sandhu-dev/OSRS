@@ -14,52 +14,54 @@ export const ACCENT_PURPLE = "#8B5CF6"
 
 // Logout icon styles
 export const logoutIconStyle = {
-    width: '24px', 
-    height: '24px',
-    cursor: 'pointer',
-    padding: '8px',
-    borderRadius: '6px',
-    filter: 'brightness(0) saturate(100%) invert(74%) sepia(58%) saturate(348%) hue-rotate(6deg) brightness(95%) contrast(97%)',
-    transition: 'all 0.2s ease',
-    transform: 'translateY(.7vh)'
+  width: '24px',
+  height: '24px',
+  cursor: 'pointer',
+  padding: '8px',
+  borderRadius: '6px',
+  filter: 'brightness(0) saturate(100%) invert(74%) sepia(58%) saturate(348%) hue-rotate(6deg) brightness(95%) contrast(97%)',
+  transition: 'all 0.2s ease',
+  transform: 'translateY(.7vh)'
 };
 
 export const logoutIconHoverHandlers = {
-    onMouseEnter: (e) => {
-        e.target.style.filter = 'brightness(0) saturate(100%) invert(100%)';
-    },
-    onMouseLeave: (e) => {
-        e.target.style.filter = 'brightness(0) saturate(100%) invert(74%) sepia(58%) saturate(348%) hue-rotate(6deg) brightness(95%) contrast(97%)';
-    }
+  onMouseEnter: (e) => {
+    e.target.style.filter = 'brightness(0) saturate(100%) invert(100%)';
+  },
+  onMouseLeave: (e) => {
+    e.target.style.filter = 'brightness(0) saturate(100%) invert(74%) sepia(58%) saturate(348%) hue-rotate(6deg) brightness(95%) contrast(97%)';
+  }
 };
 
 // 🌑 Layout
 export const PageWrapper = styled(Box)(({ theme }) => ({
-  background: "linear-gradient(to bottom right, #0F1419, #1A1F2E, #0F1419)",
+  background: "#090C10", // Deep dark background
+  backgroundImage: "radial-gradient(circle at 50% 0%, #1A1F2E 0%, #090C10 75%)", // Subtle glow
   minHeight: "100dvh",
-  paddingTop: "24px", // pt-6
-  paddingBottom: "40px", // pb-10
-  paddingLeft: "24px", // px-6
-  paddingRight: "24px", // px-6
+  paddingTop: "24px",
+  paddingBottom: "40px",
+  paddingLeft: "24px",
+  paddingRight: "24px",
   width: "100%",
   boxSizing: "border-box",
   overflowX: "hidden",
   color: "#E8EAED",
   [theme.breakpoints.down('sm')]: {
-    paddingTop: "16px", // sm:pt-4
-    paddingBottom: "24px", // sm:pb-6
-    paddingLeft: "16px", // sm:px-4
-    paddingRight: "16px", // sm:px-4
+    paddingTop: "16px",
+    paddingBottom: "24px",
+    paddingLeft: "16px",
+    paddingRight: "16px",
   },
 }));
+
 export const LogoBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    alignItems: "center",
-    flexGrow: 1,
-    [theme.breakpoints.down('sm')]: {
-        width: "100%",
-        justifyContent: "center",
-    },
+  display: "flex",
+  alignItems: "center",
+  flexGrow: 1,
+  [theme.breakpoints.down('sm')]: {
+    width: "100%",
+    justifyContent: "center",
+  },
 }));
 
 export const CenteredGrid = styled(Grid)({
@@ -68,135 +70,121 @@ export const CenteredGrid = styled(Grid)({
 
 // 🪙 Table Container
 export const RuneTableContainer = styled(TableContainer)(({ theme }) => ({
-    // bg-gradient-to-br from-[#1E2530] to-[#252D3A]
-    background: "linear-gradient(to bottom right, #1E2530, #252D3A)",
-    // rounded-2xl
-    borderRadius: "16px",
-    // shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(245,200,66,0.1)]
-    boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(245,200,66,0.1)",
-    // border border-[#2A3441] and enable horizontal scroll at all sizes
-    border: "1px solid #2A3441",
-    overflowX: "auto",
-    overflowY: "hidden",
+  background: "rgba(22, 27, 34, 0.6)", // Glassmorphism
+  backdropFilter: "blur(12px)",
+  borderRadius: "16px",
+  boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(245,200,66,0.1)", // Soft glow + border
+  border: "1px solid rgba(245, 200, 66, 0.1)",
+  overflowX: "auto",
+  overflowY: "hidden",
 }));
 
 // 🧾 Table Cells
 export const RuneTableCellHeader = styled(TableCell)({
-    color: "#F5C842", // text-[#F5C842]
-    fontWeight: "bold",
-    // bg-gradient-to-r from-[#2A3441] to-[#323C4D]
-    background: "linear-gradient(to right, #2A3441, #323C4D)",
-    // border-b-2 border-[#F5C842]/20
-    borderBottom: "2px solid rgba(245,200,66,0.2)",
-    fontFamily: '"Rubik", "Inter", sans-serif', // font-rubikx
-    padding: "6px 12px", // py-1.5 px-3 (reduced from py-2 px-4)
-    textAlign: "left", // text-left
-    fontSize: "0.7rem", // even smaller (reduced from 0.75rem)
-    textTransform: "uppercase", // uppercase
-    letterSpacing: "0.05em", // tracking-wider
-    boxShadow: "0 2px 8px rgba(245,200,66,0.1)", // shadow
+  color: "#E8EAED", // White/Off-white
+  fontWeight: "600",
+  background: "rgba(245, 200, 66, 0.05)", // Very subtle gold overlay
+  borderBottom: "1px solid rgba(245,200,66,0.1)",
+  fontFamily: '"Rubik", "Inter", sans-serif',
+  padding: "12px 16px",
+  textAlign: "left",
+  fontSize: "0.75rem",
+  textTransform: "uppercase",
+  letterSpacing: "0.1em", // Wider spacing
 });
 
 export const RuneTableCellBody = styled(TableCell)({
-    color: "#E8EAED", // text-[#E8EAED]
-    borderBottom: "1px solid #2A3441", // border-b border-[#2A3441]
-    fontFamily: '"Inter", sans-serif', // font-sans
-    padding: "6px 12px", // py-1.5 px-3 (reduced from py-2 px-4)
-    fontSize: "0.8rem", // slightly smaller (reduced from 0.875rem)
+  color: "#E8EAED",
+  borderBottom: "1px solid rgba(42, 52, 65, 0.5)",
+  fontFamily: '"Inter", sans-serif',
+  padding: "12px 16px",
+  fontSize: "0.875rem",
 });
 
 // 🧍 Row hover
 export const RuneTableRow = styled(TableRow)({
+  transition: "background-color 0.2s ease",
   "&:hover": {
-    backgroundColor: "#363A40"
+    backgroundColor: "rgba(245, 200, 66, 0.05)" // Subtle gold hover
   }
 });
 
-
 export const RuneAppBar = styled(AppBar)({
-    // Gradient background: bg-gradient-to-r from-[#0F1419] via-[#1A1F2E] to-[#0F1419]
-    background: "linear-gradient(to right, #0F1419, #1A1F2E, #0F1419)",
-    // Border bottom with subtle gold tint: border-b-2 border-[#F5C842]/20
-    borderBottom: "2px solid rgba(245, 200, 66, 0.2)",
-    // Shadows: shadow-[0_4px_24px_rgba(0,0,0,0.5),0_0_40px_rgba(245,200,66,0.05)]
-    boxShadow: "0 4px 24px rgba(0,0,0,0.5), 0 0 40px rgba(245,200,66,0.05)",
-    // Ensure AppBar is above any potential modals or popovers
-    zIndex: 1300,
-    // Ensure AppBar doesn't get too narrow on very small screens
-    minWidth: "320px",
-    // Backdrop blur: backdrop-blur-sm
-    backdropFilter: "blur(4px)",
-    WebkitBackdropFilter: "blur(4px)",
+  background: "rgba(9, 12, 16, 0.8)", // Semi-transparent dark
+  backdropFilter: "blur(16px)", // High blur
+  borderBottom: "1px solid rgba(245, 200, 66, 0.1)",
+  boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
+  zIndex: 1300,
+  minWidth: "320px",
 });
 
 export const RuneToolbar = styled(Toolbar)(({ theme }) => ({
-    minHeight: "80px",
-    padding: "0 24px",
-    [theme.breakpoints.down('md')]: {
-        minHeight: "64px",
-        padding: "0 16px",
-    },
-    [theme.breakpoints.down('sm')]: {
-        minHeight: "56px",
-        padding: "0 8px",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        gap: "8px",
-    },
+  minHeight: "80px",
+  padding: "0 24px",
+  [theme.breakpoints.down('md')]: {
+    minHeight: "64px",
+    padding: "0 16px",
+  },
+  [theme.breakpoints.down('sm')]: {
+    minHeight: "56px",
+    padding: "0 8px",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: "8px",
+  },
 }));
 
 export const Title = styled(Typography)(({ theme }) => ({
-    color: "#F5C842",
-    fontWeight: "bold",
-    fontSize: "1.75rem",
-    fontFamily: '"Rubik", sans-serif',
-    filter: "drop-shadow(0 2px 8px rgba(245, 200, 66, 0.3))",
-    [theme.breakpoints.down('md')]: {
-        fontSize: "1.25rem", // xl in Tailwind
-    },
-    [theme.breakpoints.down('sm')]: {
-        fontSize: "1.125rem", // lg in Tailwind
-        textAlign: "center",
-    },
+  color: "#F5C842",
+  fontWeight: "bold",
+  fontSize: "1.75rem",
+  fontFamily: '"Rubik", sans-serif',
+  textShadow: "0 0 20px rgba(245, 200, 66, 0.3)", // Glow effect
+  [theme.breakpoints.down('md')]: {
+    fontSize: "1.25rem",
+  },
+  [theme.breakpoints.down('sm')]: {
+    fontSize: "1.125rem",
+    textAlign: "center",
+  },
 }));
 
 export const RuneTabs = styled(Tabs)(({ theme }) => ({
-    "& .MuiTab-root": {
-        color: "rgba(255, 255, 255, 0.7)",
-        fontWeight: 500,
-        fontFamily: `"Rubik", "Inter", sans-serif`,
-    // Let each tab width fit its label/content at all sizes
+  "& .MuiTab-root": {
+    color: "rgba(232, 234, 237, 0.7)", // Off-white
+    fontWeight: 500,
+    fontFamily: `"Rubik", "Inter", sans-serif`,
     minWidth: "auto",
-        "&:hover": {
-            color: "#FFD700",
-        },
-        "&.Mui-selected": {
-            color: `${BRIGHT_GOLD} !important`, // More specific selector with !important
-            fontWeight: "600 !important",
-        },
-        [theme.breakpoints.down('sm')]: {
-            fontSize: "0.875rem",
-            padding: "6px 12px",
-        },
+    transition: "all 0.2s ease",
+    "&:hover": {
+      color: "#FFFFFF",
+      textShadow: "0 0 8px rgba(255,255,255,0.5)",
     },
-    "& .MuiTabs-indicator": {
-        backgroundColor: BRIGHT_GOLD,
+    "&.Mui-selected": {
+      color: `${BRIGHT_GOLD} !important`,
+      fontWeight: "600 !important",
+      textShadow: "0 0 12px rgba(245, 200, 66, 0.4)",
     },
     [theme.breakpoints.down('sm')]: {
-        width: "100%",
-        "& .MuiTabs-flexContainer": {
-            justifyContent: "center",
-        },
+      fontSize: "0.875rem",
+      padding: "6px 12px",
     },
+  },
+  "& .MuiTabs-indicator": {
+    backgroundColor: BRIGHT_GOLD,
+    height: "3px",
+    borderRadius: "3px 3px 0 0",
+    boxShadow: "0 0 8px rgba(245, 200, 66, 0.6)",
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: "100%",
+    "& .MuiTabs-flexContainer": {
+      justifyContent: "center",
+    },
+  },
 }));
 
 export const RuneTab = styled(Tab)({
-    textTransform: "none",
-    fontSize: "1rem",
+  textTransform: "none",
+  fontSize: "1rem",
 });
-
-
-
-
-
-

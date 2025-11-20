@@ -64,7 +64,7 @@ export default function FlippingContainer(props) {
                         inset: 0,
                         backdropFilter: 'blur(6px)',
                         WebkitBackdropFilter: 'blur(6px)',
-                        backgroundColor: 'rgba(0,0,0,0.18)',
+                        backgroundColor: 'rgba(0,0,0,0.4)', // Darker overlay
                         zIndex: 1, // below MUI modals (usually 1300) but above page content
                         pointerEvents: 'auto', // block interaction with background
                         transition: 'opacity 180ms ease',
@@ -87,10 +87,11 @@ export default function FlippingContainer(props) {
                                 severity="success"
                                 variant="filled"
                                 sx={{
-                                    backgroundColor: 'rgba(245, 200, 66, 0.15)',
+                                    backgroundColor: 'rgba(22, 27, 34, 0.8)',
+                                    backdropFilter: 'blur(12px)',
                                     color: BRIGHT_GOLD,
                                     border: '1px solid rgba(245, 200, 66, 0.3)',
-                                    boxShadow: '0 4px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(245,200,66,0.08)',
+                                    boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(245,200,66,0.1)',
                                     '& .MuiAlert-icon': { color: BRIGHT_GOLD },
                                     '& .MuiAlert-action': { color: BRIGHT_GOLD }
                                 }}
@@ -116,18 +117,20 @@ export default function FlippingContainer(props) {
                                         }}
                                         sx={{
                                             '& .MuiSwitch-switchBase.Mui-checked': {
-                                                color: 'white',
+                                                color: BRIGHT_GOLD,
                                             },
                                             '& .MuiSwitch-switchBase': {
-                                                color: '#4A5568',
+                                                color: '#8B949E',
                                             },
                                             '& .MuiSwitch-track': {
-                                                backgroundColor: '#1E2530',
+                                                backgroundColor: '#090C10',
                                                 opacity: 1,
+                                                border: '1px solid rgba(255,255,255,0.1)'
                                             },
                                             '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                                                backgroundColor: '#363A40',
+                                                backgroundColor: 'rgba(245, 200, 66, 0.2)',
                                                 opacity: 1,
+                                                border: `1px solid ${BRIGHT_GOLD}`
                                             },
                                         }}
                                     />

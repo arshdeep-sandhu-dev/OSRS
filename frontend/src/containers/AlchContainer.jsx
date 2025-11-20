@@ -15,7 +15,7 @@ import { Pagegination } from "../componants/Pagegination.js";
 import { BRIGHT_GOLD } from "../constants/style";
 
 export default function AlchContainer() {
-    
+
     const {
         handleSort,
         sortedMetrics,
@@ -32,13 +32,14 @@ export default function AlchContainer() {
         <PageWrapper>
             <CenteredGrid container direction="column" alignItems="center" spacing={4}>
                 <Grid item xs={12}>
-                    <Typography variant="h4" 
+                    <Typography variant="h4"
                         sx={{
                             mb: 2,
                             color: BRIGHT_GOLD,
-                            display: 'inline-block', // make underline match text width
-                            borderBottom: '2px solid rgba(245, 200, 66, 0.2)',
-                            pb: 0.5,
+                            display: 'inline-block',
+                            fontWeight: 700,
+                            fontFamily: '"Rubik", "Inter", sans-serif',
+                            textShadow: "0 0 20px rgba(245, 200, 66, 0.3)",
                         }}
                     >
                         OSRS Alching Methods
