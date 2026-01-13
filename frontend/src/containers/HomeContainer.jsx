@@ -11,8 +11,8 @@ import { PageWrapper, BRIGHT_GOLD } from "../constants/style";
 
 export default function HomeContainer() {
   return (
-    <PageWrapper>
-      <Grid container spacing={4} justifyContent="center">
+    <PageWrapper >
+      <Grid container spacing={4} justifyContent="center" sx={{minHeight: "90vh"}}>
         {/* Hero */}
         <Grid item xs={12} md={10} lg={9}>
           <Box sx={{
@@ -152,36 +152,7 @@ export default function HomeContainer() {
           </Grid>
         </Grid>
 
-        {/* How it works */}
-        <Grid item xs={12} md={10} lg={9} >
-          <Box sx={{
-            mt: 2,
-            p: { xs: 3, md: 4 },
-            border: '1px solid rgba(245, 200, 66, 0.1)',
-            borderRadius: 3,
-            background: 'rgba(22, 27, 34, 0.4)',
-            backdropFilter: 'blur(8px)'
-          }}>
-            <Typography variant="h5" sx={{ color: BRIGHT_GOLD, fontWeight: 700, mb: 2 }}>What this site is</Typography>
-            <Typography variant="body1" sx={{ color: '#C9D1D9', lineHeight: 1.7 }}>
-              This app focuses on two reliable OSRS money-making paths: item flipping and high alchemy. It gives you simple calculators, quick search, and a recipe registry so you can plan your moves before risking GP. Use it to pressure-test ideas, standardize your crafting runs, and avoid obvious traps.
-            </Typography>
-
-            <Divider sx={{ my: 3, borderColor: 'rgba(245,200,66,0.1)' }} />
-            <Typography variant="h6" sx={{ color: '#E8EAED', fontWeight: 700, mb: 1 }}>Quick start</Typography>
-            <Box component="ol" sx={{ color: '#8B949E', pl: 3, mt: 1, '& li': { mb: 1 } }}>
-              <li>Open <Typography component="span" sx={{ color: BRIGHT_GOLD, fontWeight: 500 }}>Flipping</Typography> to estimate buy/sell margins with fees.</li>
-              <li>Use <Typography component="span" sx={{ color: BRIGHT_GOLD, fontWeight: 500 }}>Alchs</Typography> to validate profit per cast on candidate items.</li>
-              <li>Save good crafts in the <Typography component="span" sx={{ color: BRIGHT_GOLD, fontWeight: 500 }}>Registry</Typography> to repeat later.</li>
-            </Box>
-            <Box sx={{ mt: 3, p: 2, background: 'rgba(245, 200, 66, 0.05)', borderRadius: 2, borderLeft: `3px solid ${BRIGHT_GOLD}` }}>
-              <Typography variant="body2" sx={{ color: '#C9D1D9' }}>
-                <Box component="span" sx={{ color: BRIGHT_GOLD, fontWeight: 700, mr: 1 }}>Tip:</Box>
-                Focus on consistency over jackpot trades. Small, repeatable wins stack up fast.
-              </Typography>
-            </Box>
-          </Box>
-        </Grid>
+       
 
         {/* Footer note */}
         <Grid item xs={12} md={10} lg={9} sx={{ textAlign: 'center', mt: 4, mb: 2 }}>

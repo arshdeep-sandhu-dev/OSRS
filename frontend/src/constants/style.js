@@ -150,6 +150,7 @@ export const Title = styled(Typography)(({ theme }) => ({
 }));
 
 export const RuneTabs = styled(Tabs)(({ theme }) => ({
+  
   "& .MuiTab-root": {
     color: "rgba(232, 234, 237, 0.7)", // Off-white
     fontWeight: 500,
@@ -182,6 +183,15 @@ export const RuneTabs = styled(Tabs)(({ theme }) => ({
       justifyContent: "center",
     },
   },
+
+  "& .MuiTabScrollButton-root": {
+    display: "none",
+  },
+
+  "& .MuiTabScrollButton-root.Mui-disabled": {
+    display: "none",
+  },
+  
 }));
 
 export const RuneTab = styled(Tab)({

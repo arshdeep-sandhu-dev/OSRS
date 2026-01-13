@@ -1,8 +1,8 @@
 // src/api/ApiClient.js
 
 export function ApiClient() {
-  //const API_BASE_URL = "/api";
-  const API_BASE_URL = "http://localhost:8080/api";
+  const API_BASE_URL = "/api";
+  // const API_BASE_URL = "http://localhost:8080/api";
 
 
   async function GET(endpoint) {
