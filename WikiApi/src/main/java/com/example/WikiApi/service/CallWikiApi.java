@@ -2,7 +2,9 @@ package com.example.WikiApi.service;
 
 import com.example.WikiApi.entity.Items;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
@@ -13,22 +15,20 @@ import static com.example.WikiApi.constants.Constants.MAPPINGS_URL;
 @Service
 public class CallWikiApi {
     @Autowired
-    WebClient webClient;
-
+    RestClient restClient;
     public List<Items> fetchDataList() {
-        return webClient.get()
+        return restClient.get()
                 .uri(MAPPINGS_URL)
                 .retrieve()
-                .bodyToFlux(Items.class)
-                .collectList()
-                .block();
+                .body(new ParameterizedTypeReference<List<Items>>() {});
+
     }
 
     public String fetchLatestString() {
-        return webClient.get().uri(LATEST_URL)
+        return restClient.get()
+                .uri(LATEST_URL)
                 .retrieve()
-                .bodyToMono(String.class)
-                .block();      // whole array as one String
+                .body(String.class);
 
     }
 

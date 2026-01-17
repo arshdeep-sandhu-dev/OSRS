@@ -10,6 +10,7 @@ import java.util.Map;
 
 @RestController
 @EnableWebMvc
+@RequestMapping("/api")
 public class PingController {
     @RequestMapping(path = "/ping", method = RequestMethod.GET)
     public Map<String, String> ping() {

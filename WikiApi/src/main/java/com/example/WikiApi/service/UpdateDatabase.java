@@ -6,6 +6,7 @@ import com.example.WikiApi.entity.Items;
 import com.example.WikiApi.repository.LatestPricesDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -18,19 +19,19 @@ public class UpdateDatabase {
     LatestPricesDao latestPricesDao;
     @Autowired
     ItemsDao itemDao;
-    public void AddItemsToDB() throws JsonProcessingException {
+    public List<Items> AddItemsToDB() throws JsonProcessingException {
         List<Items> allItems = createEntity.createItems();
-        itemDao.saveAll(allItems);
+        return itemDao.saveAll(allItems);
     }
 
-    public void addLatestPricesToDB() throws JsonProcessingException {
+    public List<LatestPrices> addLatestPricesToDB() throws JsonProcessingException {
         List<LatestPrices> allPrices = createEntity.createLatestPrices();
-        latestPricesDao.saveAll(allPrices);
+        return latestPricesDao.saveAll(allPrices);
     }
 
-    public void updateItems() throws JsonProcessingException{
+    public List<LatestPrices> updateItems() throws JsonProcessingException{
         List<LatestPrices> allPrices = createEntity.createLatestPrices();
-        latestPricesDao.saveAll(allPrices);
+        return latestPricesDao.saveAll(allPrices);
     }
 
 }

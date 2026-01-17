@@ -19,7 +19,15 @@ public class AppStartup {
         System.out.println("Data initialization complete.");
     }
 
-    @Scheduled(fixedDelay = 60_000, initialDelay = 60_000) // waits 60s after the previous run FINISHES
+    @Scheduled(fixedDelay = 86_400_000, initialDelay = 86_400_000) // waits 24 hours after the previous run FINISHES
+    public void addLatestPrices() throws JsonProcessingException {
+        mappings.AddItemsToDB();
+        System.out.println("Item addition complete.(24hr)");
+        mappings.addLatestPricesToDB();
+        System.out.println("Price update complete.(24hr)");
+
+    }
+    @Scheduled(fixedDelay = 29_000, initialDelay = 29_000) // waits 60s after the previous run FINISHES
     public void updatePrices() throws JsonProcessingException {
         mappings.updateItems();
         System.out.println("Data update complete.");
