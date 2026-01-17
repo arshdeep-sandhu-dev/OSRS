@@ -128,10 +128,11 @@ export default function Navbar() {
                         {!userLoggedIn && <RuneTab label="Register" />}
                         
                         {userLoggedIn && (
-                            <ExitToAppIcon sx={logoutIconStyle} {...logoutIconHoverHandlers} onClick={() => {
+                            <ExitToAppIcon  sx={logoutIconStyle} {...logoutIconHoverHandlers} variant="scrollable" scrollButtons={false} onClick={() => {
                             doSignOut();
                             navigate('/');
                             setValue(0);
+                            
                         }} />
                         )}
                         
